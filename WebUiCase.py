@@ -5,7 +5,7 @@ import os
 import subprocess
 import signal
 
-PORT = 30010
+PORT = 3000
 BRAVE_COMMAND = [
     'brave-browser',
     '--profile-directory=Default',
