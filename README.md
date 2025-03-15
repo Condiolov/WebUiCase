@@ -1,6 +1,6 @@
 # WebUiCase - Interface Web para Ollama Caseiro
 
-![WebUiCase](https://via.placeholder.com/800x400.png?text=WebUiCase+Screenshot)  
+![WebUiCase](WebUiCase.png)  
 *(Substitua esta URL por um screenshot real do seu projeto, se possível)*
 
 **WebUiCase** é uma interface web leve e personalizável para interagir com modelos de linguagem locais via Ollama. Desenvolvida em HTML, CSS e JavaScript, sem frameworks, com opções de servidores simples em Bash e Python, esta aplicação permite aos usuários enviar prompts, visualizar respostas em tempo real, gerenciar conversas, criar especialistas e muito mais, tudo em uma interface amigável e estilizada.
