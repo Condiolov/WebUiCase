@@ -219,8 +219,7 @@
 	<body>
 					<div id="menu">
 			    <div class="inline">
-			        <button class="bttn" onclick="novaConversa()" legenda="Renomear Arquivo">WebUiCase</button>
-			        <button class="bttn" onclick="nomeiaConversa()" legenda="Renomear Arquivo">✏️</button>
+			        <button class="bttn" onclick="novaConversa()" legenda="Criar nova conversa">WebUiCase</button>
 			        <button class="bttn" onclick="changeTheme()" legenda="Trocar tema">🎨</button>
 			        <div>
 			
@@ -255,7 +254,7 @@
 			        </div>
 			
 			        <button class="bttn" id="toggle-search" onclick="busca_palavra(this)">🔍</button>
-			        <button class="bttn" onclick="window.location.href='/sair'; setTimeout(window.close, 10);">❌</button>
+			        <button class="bttn" legenda="Fecha o WebUiCase" onclick="window.location.href='/sair'; setTimeout(window.close, 10);" style="margin-left: 7vw;">💀</button>
 			    </div> 
 			</div>
 			
@@ -709,7 +708,7 @@
 			            toggleButton.textContent = '🔻';
 			            toggleButton.style.display = 'block';
 			
-			            console.log('Rolagem automática reativada por rolagem para cima');
+			            // console.log('Rolagem automática reativada por rolagem para cima');
 			        }
 			    }
 			    // Verifica se está no final da página
@@ -755,7 +754,7 @@
 			    //    	const especial = document.getElementById('especial');
 			    // 	especial.style.outline = '1px solid';
 			    const promptText = document.getElementById('prompt').value.trim();
-			    console.log(edit_especialista);
+			    // console.log(edit_especialista);
 			    if (promptText === '') { 
 			        // Se o prompt estiver vazio, mostra o select de especialistas
 			        const selectEspecialistas = document.querySelector('.especialistas');
@@ -934,7 +933,7 @@
 			    render_code3();
 			}
 			
-			console.clear(); 
+			// console.clear();
 			let tem_Code = false;
 			let fullText ="";let codigo = '';
 			function estilizar2 (text) {
@@ -1019,8 +1018,6 @@
 			            const computedStyles = window.getComputedStyle(tema);
 			            document.documentElement.style.setProperty('--color', computedStyles.color);
 			            document.documentElement.style.setProperty('--bg-color', computedStyles.backgroundColor);
-			        } else {
-			            console.warn('Tema não encontrado:', themes[currentThemeIndex]);
 			        }
 			    }, 500);
 			}
@@ -1047,7 +1044,7 @@
 			function createNewFragmentDiv(tempResponse) {
 			    const div = document.createElement('div');
 			    div.className = 'ff';
-			    console.log(tempResponse);
+			    // console.log(tempResponse);
 			    tempResponse.appendChild(div);
 			    return div;
 			}
