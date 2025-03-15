@@ -75,20 +75,20 @@ O WebUiCase oferece uma ampla gama de recursos para interação com modelos de I
    - **Opção 1: Bash**
      - Dê permissão ao script:
        ```bash
-       chmod +x server.sh
+       chmod +x WebUiCase.sh
        ```
      - Execute:
        ```bash
-       ./server.sh
+       ./WebUiCase.sh
        ```
    - **Opção 2: Python**
      - Dê permissão ao script (opcional):
        ```bash
-       chmod +x server.py
+       chmod +x WebUiCase.py
        ```
      - Execute:
        ```bash
-       python3 server.py
+       python3 WebUiCase.py
        ```
 
 4. **Acesse**
