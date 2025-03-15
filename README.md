@@ -179,6 +179,7 @@ WebUiCase/
 Sugestões de melhorias:
 - Implementar um frontend para salvar conversas e configurações.
 - Criação propria de Markdown e estilização de codigo
+- implementar outras apis privadas (ChatGPT, Grok, DeepSeek, Minstral etc..)
 
 ---
 
