@@ -3,7 +3,7 @@
 **WebUiCase** é uma interface web leve e personalizável para interagir com modelos de linguagem locais via Ollama. Desenvolvida em HTML, CSS e JavaScript, sem frameworks, com opções de servidores simples em Bash e Python, esta aplicação permite aos usuários enviar prompts, visualizar respostas em tempo real, gerenciar conversas, criar especialistas e muito mais, tudo em uma interface amigável e estilizada. Totalmente privativo, não salva as conversas por padrão, funciona completamente offline e permite salvar conversas localmente no navegador, garantindo que seus dados permaneçam no seu dispositivo.
 
 ![WebUiCase](WebUiCase.png)  
-*(Substitua esta URL por um screenshot real do seu projeto, se possível)*
+*(PrintScreen atual do WebUiCase)*
 
 ## Sumário
 - [Funcionalidades](#funcionalidades)
