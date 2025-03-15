@@ -121,29 +121,31 @@
 			    white-space: pre-wrap;
 			    margin-bottom: 110px;
 			    margin-top: 50px;
-			    display: flex
-			        ;
+			    display: flex        ;
 			    flex-direction: column;
 			    max-width: 768px;
+			    text-align: justify;
 			}
 			.hidden{
 			    display:none;
 			}
+			
 			eu{
-			    display: flex;
-			    margin: 10px;
+			        float: right;
+			    text-align: right;
+			/*     margin: 10px; */
 			    justify-self: anchor-center;
 			    background: #36383acc;
 			    box-sizing: border-box;
 			    border-radius: 20px 20px 0px 20px;
-			    padding: 13px;   
+			    padding: 13px;
 			}
+			
 			ia {
-			    width: 100%;
-			    color: #c9c9c9;
-			    text-align: justify;
+			   float: left;
+			/*     margin: 10px; */
 			    justify-self: anchor-center;
-			    background: #141414cc;
+			    background: #36383acc;
 			    box-sizing: border-box;
 			    border-radius: 20px 20px 20px 0px;
 			    padding: 13px;
@@ -214,100 +216,92 @@
 			    color: var(--color);
 			}
 			
+			
 		</style>
 	</head>
 	<body>
 					<div id="menu">
-			    <div class="inline">
-			        <button class="bttn" onclick="novaConversa()" legenda="Criar nova conversa">WebUiCase</button>
-			        <button class="bttn" onclick="changeTheme()" legenda="Trocar tema">🎨</button>
-			        <div>
+			            <div class="inline">
+			                <button class="bttn" onclick="novaConversa()" legenda="Criar nova conversa">WebUiCase</button>
+			                <button class="bttn" onclick="changeTheme()" legenda="Trocar tema">🎨</button>
+			                <div>
+			                    <select id="modelos" name="modelos" legenda="Trocar modelo"> 
+			                        <option>llama3.2</option>
+			                    </select>
+			                </div> 
+			                <div class="especial" style="display: inline-flex;border-radius: 5px;">
+			                    <button class="bttn" onclick="criarEspecialista()" legenda="Modelos especialistas">📝</button>
+			                    <div class="especialistas hidden">
+			                        <select id="especialistas" onchange="carregarEspecialista()" >
+			                            <option>Selecione</option>
+			                        </select>
+			                        <button class="bttn" onclick="editarEspecialista()" legenda="Editar Especialista">✏️</button>
+			                        <button class="bttn" onclick="excluirEspecialista()" legenda="Excluir Especialista">🗑️</button>
+			                        <button class="bttn" onclick="sairEspecialista('especialistas')" legenda="Fechar Especialista">❌</button>
+			                    </div>
+			                </div>
+			                <button class="bttn" onclick="salvar_conversa()">💾</button>
+			                <div class="especial" style="display: inline-flex;border-radius: 5px;">
+			                    <button class="bttn" onclick="abrirConversas()" legenda="Modelos conversas">📂</button>
+			                    <div class="conversas hidden">
+			                        <select id="conversas" onchange="carregarConversas()" >
+			                            <option>Selecione</option>
+			                        </select>            <button class="bttn" onclick="excluirConversas()" legenda="Excluir Conversas">🗑️</button>
+			                        <button class="bttn" onclick="sairEspecialista('conversas')" legenda="Fechar Especialista">❌</button>
+			                    </div>
+			                </div>
+			                <div class="inline busca hidden">
+			                    <input class="bttn" type="text" oninput="findNext()" id="find"/><button class="bttn" onclick="findNext()">🔍<span id="count-display" class="count-display"></span></button>
 			
-			            <select id="modelos" name="modelos" legenda="Trocar modelo"> 
-			                <option>llama3.2</option>
-			            </select>
-			        </div> 
-			        <div class="especial" style="display: inline-flex;border-radius: 5px;">
-			            <button class="bttn" onclick="criarEspecialista()" legenda="Modelos especialistas">📝</button>
-			            <div class="especialistas hidden">
-			                <select id="especialistas" onchange="carregarEspecialista()" >
-			                    <option>Selecione</option>
-			                </select>
-			                <button class="bttn" onclick="editarEspecialista()" legenda="Editar Especialista">✏️</button>
-			                <button class="bttn" onclick="excluirEspecialista()" legenda="Excluir Especialista">🗑️</button>
-			                <button class="bttn" onclick="sairEspecialista('especialistas')" legenda="Fechar Especialista">❌</button>
-			            </div>
+			                </div>
+			
+			                <button class="bttn" id="toggle-search" onclick="busca_palavra(this)">🔍</button>
+			                <button class="bttn" legenda="Fecha o WebUiCase" onclick="window.location.href='/sair'; setTimeout(window.close, 10);" style="margin-left: 7vw;">💀</button>
+			            </div> 
 			        </div>
-			        <button class="bttn" onclick="salvar_conversa()">💾</button>
-			        <div class="especial" style="display: inline-flex;border-radius: 5px;">
-			            <button class="bttn" onclick="abrirConversas()" legenda="Modelos conversas">📂</button>
-			            <div class="conversas hidden">
-			                <select id="conversas" onchange="carregarConversas()" >
-			                    <option>Selecione</option>
-			                </select>            <button class="bttn" onclick="excluirConversas()" legenda="Excluir Conversas">🗑️</button>
-			                <button class="bttn" onclick="sairEspecialista('conversas')" legenda="Fechar Especialista">❌</button>
-			            </div>
-			        </div>
-			        <div class="inline busca hidden">
-			            <input class="bttn" type="text" oninput="findNext()" id="find"/><button class="bttn" onclick="findNext()">🔍<span id="count-display" class="count-display"></span></button>
 			
+			        <div id="response"></div>
+			
+			        <div class="fixo"> 
+			            <button id="toggle-scroll" onclick="toggleAutoScroll()" style="display:none"></button>
+			            <textarea id="prompt" autofocus placeholder="Digite sua mensagem aqui..."  oninput="this.style.height = ''; this.style.height = this.scrollHeight +'px'"></textarea> 
 			        </div>
 			
-			        <button class="bttn" id="toggle-search" onclick="busca_palavra(this)">🔍</button>
-			        <button class="bttn" legenda="Fecha o WebUiCase" onclick="window.location.href='/sair'; setTimeout(window.close, 10);" style="margin-left: 7vw;">💀</button>
-			    </div> 
-			</div>
+			        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/6.65.7/codemirror.min.css">
+			        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/6.65.7/theme/ambiance.css"><script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/6.65.7/codemirror.min.js"></script>
+			        <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/6.65.7/mode/htmlmixed/htmlmixed.min.js"></script>
+			        <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/6.65.7/mode/css/css.min.js"></script>
+			        <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/6.65.7/mode/javascript/javascript.min.js"></script>
+			        <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/6.65.7/mode/python/python.min.js"></script>
+			        <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/6.65.7/mode/xml/xml.min.js"></script>
+			        <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/6.65.7/addon/search/searchcursor.min.js"></script>
 			
-			<div id="response"></div>
-			
-			<div class="fixo">
-			    <button id="toggle-scroll" onclick="toggleAutoScroll()" style="display:none"></button>
-			    <textarea id="prompt" placeholder="Digite sua mensagem aqui..."  oninput="this.style.height = ''; this.style.height = this.scrollHeight +'px'">Crie uma pagina simples em html</textarea>
-			</div>
-			
-			<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/6.65.7/codemirror.min.css">
-			<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/6.65.7/theme/ambiance.css"><script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/6.65.7/codemirror.min.js"></script>
-			<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/6.65.7/mode/htmlmixed/htmlmixed.min.js"></script>
-			<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/6.65.7/mode/css/css.min.js"></script>
-			<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/6.65.7/mode/javascript/javascript.min.js"></script>
-			<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/6.65.7/mode/python/python.min.js"></script>
-			<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/6.65.7/mode/xml/xml.min.js"></script>
-			<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/6.65.7/addon/search/searchcursor.min.js"></script>
-			
-			<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/6.65.7/addon/hint/show-hint.min.js"></script>
-			<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/6.65.7/addon/hint/xml-hint.min.js"></script> 
-			<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/6.65.7/addon/hint/html-hint.min.js"></script>
-			<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/6.65.7/addon/hint/css-hint.min.js"></script> 
-			<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/6.65.7/addon/hint/javascript-hint.min.js"></script>
-			<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/6.65.7/addon/edit/closetag.min.js"></script>
-			<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/6.65.7/addon/lint/lint.min.js"></script>
-			<!-- 		<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/6.65.7/addon/lint/html-lint.min.js"></script> -->
-			<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/6.65.7/addon/comment/comment.min.js"></script>
-			<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/6.65.7/addon/search/searchcursor.js"></script>
-			<script src="https://markdownlivepreview.com/js/marked.min.js"></script>
-			<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/6.65.7/addon/search/search.js"></script>
-			<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/6.65.7/addon/edit/matchbrackets.min.js"></script>
-		<script>			// Variável para armazenar o histórico de mensagens (contexto)
-			// console.clear();
-			let promptHistory = [];
-			let historyIndex = -1; // Índice atual no histórico (-1 significa nenhum histórico selecionado)
+			        <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/6.65.7/addon/hint/show-hint.min.js"></script>
+			        <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/6.65.7/addon/hint/xml-hint.min.js"></script> 
+			        <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/6.65.7/addon/hint/html-hint.min.js"></script>
+			        <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/6.65.7/addon/hint/css-hint.min.js"></script> 
+			        <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/6.65.7/addon/hint/javascript-hint.min.js"></script>
+			        <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/6.65.7/addon/edit/closetag.min.js"></script>
+			        <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/6.65.7/addon/lint/lint.min.js"></script>
+			        <!-- 		<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/6.65.7/addon/lint/html-lint.min.js"></script> -->
+			        <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/6.65.7/addon/comment/comment.min.js"></script>
+			        <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/6.65.7/addon/search/searchcursor.js"></script>
+			        <script src="https://markdownlivepreview.com/js/marked.min.js"></script>
+			        <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/6.65.7/addon/search/search.js"></script>
+			        <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/6.65.7/addon/edit/matchbrackets.min.js"></script>
+		<script>			let promptHistory = [];
+			let historyIndex = -1; 
 			edit_especialista=false;
+			
 			let sytemPrompt = "";
-			let conversationHistory = [];
+			let historico = [];
 			let isAutoScrollEnabled = true;
 			let nomeEspecialista;
 			const themes = ["3024-day", "3024-night", "abbott", "abcdef", "ambiance", "ayu-dark", "ayu-mirage","base16-dark", "bespin", "base16-light", "blackboard", "cobalt", "colorforth","dracula", "duotone-dark", "duotone-light", "eclipse", "elegant", "erlang-dark","gruvbox-dark", "hopscotch", "icecoder", "isotope", "juejin", "lesser-dark","liquibyte", "lucario", "material", "material-darker", "material-palenight","material-ocean", "mbo", "mdn-like", "midnight", "monokai", "moxer", "neat","neo", "night", "nord", "oceanic-next", "panda-syntax", "paraiso-dark","paraiso-light", "pastel-on-dark", "railscasts", "rubyblue", "seti", "shadowfox","solarized", "the-matrix", "tomorrow-night-bright", "tomorrow-night-eighties","ttcn", "twilight", "vibrant-ink", "xq-dark", "xq-light", "yeti", "idea","darcula", "yonce", "zenburn"];
 			
 			// Índice do tema atual
-			let currentThemeIndex = 4;
-			
-			
-			// var promptEditor = CodeMirror(document.getElementById('prompt-editor'), {
-			//     mode: 'html', // Modo de realce de sintaxe (ajuste conforme necessário)
-			//     lineNumbers: true, // Numeração de linhas)
-			// });
+			let currentThemeIndex = 4; 
 			const responseDiv = document.getElementById('response');
-			
 			
 			async function sendPrompt() {
 			    const promptInput = document.getElementById('prompt');
@@ -317,37 +311,18 @@
 			
 			    const para_salvarDiv = document.getElementById('para_salvar');
 			    const selectModelos = document.getElementById('modelos');
-			    const modeloSelecionado = selectModelos.value; // Pega o modelo selecionado
-			    // Se o prompt for sobre listar modelos
+			    const modeloSelecionado = selectModelos.value; 
 			
+			    if (!prompt) return;
 			
-			    //     console.log("----------",prompt);
-			    if (!prompt) {
-			        responseDiv.innerHTML += "<ia>Por favor, digite um prompt!</ia><br>";
-			        return;
-			    } 
+			    historico.push({ role: "user", content: prompt });
 			
-			    // Adiciona a pergunta ao histórico
-			    conversationHistory.push({ role: "user", content: prompt });
+			    responseDiv.innerHTML += `<balao><eu> ${escapeHtml(prompt)}</eu></balao><br>`;
 			
-			    // Exibe a pergunta na tela antes de enviar
-			    function escapeHtml(unsafe) {
-			        return unsafe
-			            .replace(/&/g, "&amp;")
-			            .replace(/</g, "&lt;")
-			            .replace(/>/g, "&gt;")
-			            .replace(/"/g, "&quot;")
-			            .replace(/'/g, "&#039;");
-			    }
-			
-			    responseDiv.innerHTML += `<eu><strong>Você:</strong> ${escapeHtml(prompt)}</eu><br>`;
-			    // Limpa o campo de input
 			    promptInput.value = "";
 			    promptInput.style.height="";
 			
-			    //     try {
-			    // Constrói o prompt com o histórico de conversa
-			    const fullPrompt = conversationHistory.map(msg => `${msg.role}: ${msg.content}`).join('\n');
+			    const fullPrompt = historico.map(msg => `${msg.role}: ${msg.content}`).join('\n');
 			
 			    const response = await fetch('http://localhost:11434/api/generate', {
 			        method: 'POST',
@@ -355,9 +330,9 @@
 			            'Content-Type': 'application/json',
 			        },
 			        body: JSON.stringify({
-			            model: modeloSelecionado || 'llama3.2', // Substitua pelo modelo que você está usando)
-			            prompt: fullPrompt, // Envia o histórico completo como prompt)
-			            stream: true, // Ativa o streaming)
+			            model: modeloSelecionado || 'llama3.2', 
+			            prompt: fullPrompt,
+			            stream: true,
 			            system: sytemPrompt,
 			        })
 			    });
@@ -370,9 +345,10 @@
 			    const decoder = new TextDecoder();
 			    let aiResponse = ""; // Acumula a resposta da IA)
 			
-			    // Cria um contêiner temporário para a nova resposta
+			    const tempResponse2 = document.createElement('balao');
+			    responseDiv.appendChild(tempResponse2);
 			    const tempResponse = document.createElement('ia');
-			    responseDiv.appendChild(tempResponse);
+			    tempResponse2.appendChild(tempResponse);
 			    currentDiv = createNewFragmentDiv(tempResponse);
 			    while (true) {
 			        const { done, value } = await reader.read();
@@ -383,81 +359,50 @@
 			
 			        for (const line of lines) {
 			            if (line.trim()) {
-			                //                     try {
 			                const data = JSON.parse(line);
 			                if (data.response) {
-			                    aiResponse += data.response; // Acumula a resposta)
-			                    //                             tempResponse.innerText += data.response; // Adiciona ao contêiner temporário)
-			                    //                             tempResponse.innerHTML+= data.response; 
-			                    //                             tempResponse.innerHTML += escapeHtml(data.response);
-			                    //                             tempResponse.innerHTML = MarkdownStyler.render(aiResponse);
-			                    //                             tempResponse.innerHTML += 
+			                    aiResponse += data.response; 
 			                    estilizar(data.response,tempResponse);
-			                    // Atualiza o CodeMirror em tempo real
-			
 			                    const responseDiv = document.getElementById('response');
 			                    if (isAutoScrollEnabled)
-			                        window.scrollBy(0, responseDiv.scrollHeight); // Rolagem automática)
-			                }
-			                //                     } catch (e) {
-			                //                         console.error('Erro ao parsear linha:', line);
-			                //                     }
+			                        window.scrollBy(0, responseDiv.scrollHeight); 
+			                }               
 			            }
 			        }
 			    }
 			
-			    // Adiciona a resposta da IA ao histórico
-			    conversationHistory.push({ role: "assistant", content: aiResponse });
-			    responseDiv.innerHTML += '<br>'; // Quebra de linha após a resposta)
-			    //         render_code3();
-			    //     } catch (error) {
-			    //         responseDiv.innerHTML += `<ia>Erro: ${error.message}</ia><br>`;
-			    //     }
+			    historico.push({ role: "assistant", content: aiResponse });
+			    responseDiv.innerHTML += '<br>'; 
 			}
 			
 			
 			async function carregarModelosOllama() {
 			    const selectModelos = document.getElementById('modelos');
 			
-			    try {
-			        // Faz a requisição para listar os modelos
-			        const response = await fetch('http://localhost:11434/api/tags', {
-			            method: 'GET',
-			            headers: {
-			                'Content-Type': 'application/json',
-			            }
-			        });
-			
-			        if (!response.ok) {
-			            throw new Error('Erro ao carregar os modelos do Ollama');
+			    const response = await fetch('http://localhost:11434/api/tags', {
+			        method: 'GET',
+			        headers: {
+			            'Content-Type': 'application/json',
 			        }
+			    });
 			
-			        const data = await response.json();
-			        const modelos = data.models;
-			
-			        modelos.forEach(modelo => {
-			            if(modelo.name.includes("llama3.2"))return;
-			
-			            const nomeModelo = modelo.name || modelo.model;
-			            const option = document.createElement('option');
-			            option.value = nomeModelo;
-			            option.textContent = nomeModelo;
-			            selectModelos.appendChild(option);
-			        });
-			
-			    } catch (error) {
-			        selectModelos.innerHTML = `<option value="">Erro: ${error.message}</option>`;
+			    if (!response.ok) {
+			        responseDiv.innerHTML += `<ia><strong>Erro:</strong> Erro ao carregar os modelos do Ollama</ia><br>`;          
 			    }
+			
+			    const data = await response.json();
+			    const modelos = data.models;
+			
+			    modelos.forEach(modelo => {
+			        if(modelo.name.includes("llama3.2"))return;
+			        const nomeModelo = modelo.name || modelo.model;
+			        const option = document.createElement('option');
+			        option.value = nomeModelo;
+			        option.textContent = nomeModelo;
+			        selectModelos.appendChild(option);
+			    }); 
 			}
-			function escapeHtml(unsafe) {
-			    return unsafe
-			        .replace(/&/g, '&amp;')
-			        .replace(/</g, '&lt;')
-			        .replace(/>/g, '&gt;')
-			        .replace(/"/g, '&quot;')
-			        .replace(/'/g, '&#039;');
-			}
-			// Evento para captura do Enter
+			
 			document.addEventListener('keydown', function(event) {
 			    const prompt = document.getElementById('prompt');
 			
@@ -470,22 +415,18 @@
 			    } else if (event.key === 'Enter') {
 			        event.preventDefault();
 			        sendPrompt();
-			    } else if (event.key === 'ArrowUp') {
-			        // Recupera o prompt anterior com a seta para cima
+			    } else if (prompt.value == "" && event.key === 'ArrowUp') {
 			        event.preventDefault();
-			        if (promptHistory.length === 0) return; // Sai se não há histórico
-			
-			        // Se estamos no início ou fora do histórico, começamos do último item
+			        if (promptHistory.length === 0) return; 
 			        if (historyIndex === -1) {
 			            historyIndex = promptHistory.length - 1;
 			        } else if (historyIndex > 0) {
-			            historyIndex--; // Move para o item anterior
+			            historyIndex--; 
 			        }
 			
 			        prompt.value = promptHistory[historyIndex];
-			        prompt.selectionStart = prompt.selectionEnd = prompt.value.length; // Coloca o cursor no final
-			    } else if (event.key === 'ArrowDown') {
-			        // Recupera o próximo prompt com a seta para baixo (opcional)
+			        prompt.selectionStart = prompt.selectionEnd = prompt.value.length; 
+			    } else if (prompt.value == ""  && event.key === 'ArrowDown') {
 			        event.preventDefault();
 			        if (promptHistory.length === 0 || historyIndex === -1) return;
 			
@@ -493,19 +434,14 @@
 			            historyIndex++; // Move para o próximo item
 			            prompt.value = promptHistory[historyIndex];
 			        } else {
-			            // Se chegamos ao final, limpa o campo
 			            historyIndex = -1;
 			            prompt.value = '';
 			        }
-			        prompt.selectionStart = prompt.selectionEnd = prompt.value.length; // Coloca o cursor no final
+			        prompt.selectionStart = prompt.selectionEnd = prompt.value.length; 
 			    }
 			});
 			
-			/**
-			 * Função para renderizar blocos de código dentro das tags <ia>.
-			 * Cria uma instância do CodeMirror para cada bloco de código encontrado.
-			 */
-			const modes = {
+			const language_list = {
 			    'bash': 'shell',
 			    'python': 'python',
 			    'js': 'javascript',
@@ -515,88 +451,27 @@
 			    'c': 'clike'
 			};
 			function loadModeScript(language) {
-			
-			
-			    const mode = modes[language] || language || 'plaintext'; // Fallback para 'plaintext'
+			    const mode = language_list[language] || language || 'plaintext'; 
 			    const scriptUrl = `https://cdnjs.cloudflare.com/ajax/libs/codemirror/6.65.7/mode/${mode}/${mode}.min.js`;
 			
-			    // Verifica se o script já foi carregado
 			    if (!document.querySelector(`script[src="${scriptUrl}"]`)) {
 			        const script = document.createElement('script');
 			        script.src = scriptUrl;
 			        script.async = false; // Carrega na ordem
 			        document.head.appendChild(script);
 			        return new Promise((resolve) => {
-			            script.onload = resolve; // Resolve a promise quando o script carregar
+			            script.onload = resolve; 
 			        });
 			    }
-			    return Promise.resolve(); // Retorna uma promise resolvida se o script já existe
+			    return Promise.resolve(); 
 			}
 			
-			// Função principal ajustada
-			async function render_code3() {
-			    const iaTags = document.querySelectorAll('ia');
-			
-			    for (const iaTag of iaTags) { // Usamos um loop 'for' para aguardar as promises
-			        const content = iaTag.textContent;
-			        const codeBlocks = content.match(/```(\w*)\n([\s\S]*?)```/g);
-			
-			        if (codeBlocks) {
-			            const fragment = document.createDocumentFragment();
-			            let remainingContent = content;
-			
-			            for (const block of codeBlocks) {
-			                const match = block.match(/```(\w*)\n([\s\S]*?)```/);
-			                if (!match) continue; // Pula se não houver correspondência
-			
-			                let language = match[1].toLowerCase(); // Linguagem em minúsculas
-			                const codeContent = match[2].trim(); // Conteúdo do bloco
-			
-			                // Carrega o modo dinamicamente e aguarda
-			                await loadModeScript(language);
-			
-			                const textBefore = remainingContent.split(block)[0];
-			                if (textBefore) {
-			                    const textNode = document.createTextNode(textBefore);
-			                    fragment.appendChild(textNode);
-			                }
-			
-			                const codeContainer = document.createElement('div');
-			                codeContainer.classList.add('code-container');
-			                fragment.appendChild(codeContainer);
-			                carrega_tema();
-			                const codeMirrorInstance = CodeMirror(codeContainer, {
-			                    value: codeContent || '',
-			                    mode: modes[language],
-			                    //                     lineNumbers: true,
-			                    theme: themes[currentThemeIndex],
-			                    viewportMargin: Infinity,
-			                    lineWrapping: true,
-			                    readOnly: false
-			                });
-			
-			                setTimeout(() => codeMirrorInstance.refresh(), 0);
-			                remainingContent = remainingContent.split(block)[1] || '';
-			            }
-			
-			            if (remainingContent) {
-			                const textNode = document.createTextNode(remainingContent);
-			                fragment.appendChild(textNode);
-			            }
-			
-			            iaTag.innerHTML = '';
-			            iaTag.appendChild(fragment);
-			        }
-			    }
-			}
 			
 			function busca_palavra(button) {
 			    const buscaElements = document.querySelectorAll('.busca');
-			    // Verifica o estado atual do elemento .busca
-			    const isHidden = buscaElements[0].classList.contains('hidden'); // Usa o primeiro elemento como referência
+			    const isHidden = buscaElements[0].classList.contains('hidden'); 
 			
 			    if (isHidden) {
-			        // Remove 'hidden' e troca o emoji do botão para "fechar" (❌)
 			        buscaElements.forEach(element => {
 			            element.classList.remove('hidden');
 			        });
@@ -608,34 +483,27 @@
 			            parent.replaceChild(document.createTextNode(highlight.textContent), highlight);
 			            parent.normalize(); // Junta nós de texto adjacentes
 			        });
-			        // Adiciona 'hidden' e troca o emoji do botão para "lupa" (🔍)
 			        buscaElements.forEach(element => {
 			            element.classList.add('hidden');
 			        });
 			        button.textContent = '🔍'; // Emoji de lupa no botão
 			    }
 			
-			    // Adiciona evento de clique no botão apenas uma vez (já está implícito no onclick do HTML)
 			}
-			// let currentHighlightIndex = -1;
 			
 			let currentHighlightIndex = -1; // Declarado fora da função para persistir entre chamadas
 			
 			function findNext() {
 			    const findInput = document.getElementById('find');
 			    const searchText = findInput.value.trim();
-			
 			    if (!searchText) return;
-			
-			    // Remove destaques anteriores
 			    const previousHighlights = document.querySelectorAll('.highlight');
 			    previousHighlights.forEach(highlight => {
 			        const parent = highlight.parentNode;
 			        parent.replaceChild(document.createTextNode(highlight.textContent), highlight);
-			        parent.normalize(); // Junta nós de texto adjacentes
+			        parent.normalize(); 
 			    });
 			
-			    // Cria um TreeWalker para percorrer apenas nós de texto
 			    const walker = document.createTreeWalker(
 			        document.body,
 			        NodeFilter.SHOW_TEXT,
@@ -647,11 +515,10 @@
 			    let node;
 			    while ((node = walker.nextNode())) {
 			        if (node.nodeValue.trim() && node.parentNode.tagName !== 'SCRIPT' && node.parentNode.tagName !== 'STYLE') {
-			            textNodes.push(node); // Armazena apenas nós de texto relevantes
+			            textNodes.push(node);
 			        }
 			    }
 			
-			    // Busca e destaca o texto nos nós coletados
 			    const regex = new RegExp(`(${searchText})`, 'gi');
 			    textNodes.forEach(textNode => { 
 			        if (regex.test(textNode.nodeValue)) {
@@ -671,7 +538,6 @@
 			        }
 			    });
 			
-			    // Navega para a próxima ocorrência
 			    const highlights = document.querySelectorAll('.highlight');
 			    if (highlights.length > 0) {
 			        if (currentHighlightIndex ===
@@ -688,12 +554,12 @@
 			    }
 			}
 			
-			// Função para alternar a rolagem automática
+			
 			function toggleAutoScroll() {
 			    const toggleButton = document.getElementById('toggle-scroll'); 
 			    window.scrollTo({
 			        top: document.documentElement.scrollHeight,
-			        behavior: 'smooth' // Rolagem suave
+			        behavior: 'smooth' 
 			    });
 			    isAutoScrollEnabled = true;
 			    toggleButton.style.display = 'none';
@@ -704,14 +570,10 @@
 			    if (event.deltaY < 0) { // Rolagem para cima (deltaY negativo)
 			        if (isAutoScrollEnabled) { // Só atualiza se estava desativado
 			            isAutoScrollEnabled = false;
-			
 			            toggleButton.textContent = '🔻';
 			            toggleButton.style.display = 'block';
-			
-			            // console.log('Rolagem automática reativada por rolagem para cima');
 			        }
 			    }
-			    // Verifica se está no final da página
 			    const scrollPosition = window.scrollY + window.innerHeight;
 			    const documentHeight = document.documentElement.scrollHeight;
 			
@@ -720,7 +582,6 @@
 			    else 
 			        toggleButton.style.display = 'block'; 
 			});
-			
 			
 			function editarEspecialista(){
 			    edit_especialista=true;
@@ -732,52 +593,45 @@
 			    const especialistas = JSON.parse(localStorage.getItem('especialistas')) || {};
 			    delete especialistas[nomeEspecialista];
 			    localStorage.setItem('especialistas', JSON.stringify(especialistas));
-			    carregarEspecialistasNoSelect(); 
+			    select_especialista(); 
 			}
 			function sairEspecialista(fechar){
 			    const botao = event.currentTarget;
-			    // Pega o elemento pai com a classe 'especial' mais próximo do botão
 			    const divEspecial = botao.closest('.especial');
-			    // Aplica o estilo apenas a essa div específica
 			    divEspecial.style.outline = '';
-			    //     document.querySelector('.'+fechar).classList.add('hidden');
 			    divEspecial.querySelector('.' + fechar).classList.add('hidden');
 			
 			}
 			function criarEspecialista() {
 			    const botao = event.currentTarget;
-			    // Pega o elemento pai com a classe 'especial' mais próximo do botão
 			    const divEspecial = botao.closest('.especial');
-			    // Aplica o estilo apenas a essa div específica
 			    divEspecial.style.outline = '1px solid';
-			
-			    //    	const especial = document.getElementById('especial');
-			    // 	especial.style.outline = '1px solid';
 			    const promptText = document.getElementById('prompt').value.trim();
-			    // console.log(edit_especialista);
 			    if (promptText === '') { 
-			        // Se o prompt estiver vazio, mostra o select de especialistas
 			        const selectEspecialistas = document.querySelector('.especialistas');
 			        selectEspecialistas.classList.remove('hidden');
-			        carregarEspecialistasNoSelect();
+			        select_especialista();
 			    } else {
 			        nomeEspecialista = window.prompt('Digite o nome do especialista:', nomeEspecialista);
 			        if (nomeEspecialista) { 
 			            const especialistas = JSON.parse(localStorage.getItem('especialistas') || '{}');
 			            especialistas[nomeEspecialista] = promptText;
 			            localStorage.setItem('especialistas', JSON.stringify(especialistas));
-			            // Limpa o campo prompt
 			            document.getElementById('prompt').value = '';
-			            // Atualiza a lista de especialistas
-			            carregarEspecialistasNoSelect(); 
+			            select_especialista(); 
 			            edit_especialista=false;
 			        }
 			    }
 			} 
 			
-			function carregarEspecialistasNoSelect() {
+			function select_especialista() {
 			    const selectEspecialistas = document.getElementById('especialistas');
 			    selectEspecialistas.innerHTML = '';
+			
+			    const optionDefault = document.createElement('option');
+			    optionDefault.value = '';
+			    optionDefault.textContent = 'Selecione';
+			    selectEspecialistas.appendChild(optionDefault);
 			
 			    const especialistas = JSON.parse(localStorage.getItem('especialistas') || '{}');
 			    for (const [nome, texto] of Object.entries(especialistas)) {
@@ -786,7 +640,7 @@
 			        option.textContent = nome;
 			        selectEspecialistas.appendChild(option);
 			    }
-			}
+			} 
 			
 			
 			function carregarEspecialista() {
@@ -849,12 +703,6 @@
 			});
 			
 			
-			window.onload = function() {
-			    carregarModelosOllama();
-			    carregarEspecialistasNoSelect(); 
-			};
-			
-			
 			function salvar_conversa(){
 			    const iaElement = document.querySelector('ia');
 			    const texto = iaElement.textContent;
@@ -864,23 +712,16 @@
 			    const match = texto.match(regex);
 			    const resultado = match ? match[1] : '';
 			
-			
 			    conversa_nome = window.prompt('Nome para conversa:', resultado);
 			    if (conversa_nome) { 
 			        const conversas = JSON.parse(localStorage.getItem('conversas') || '{}');
-			        conversas[conversa_nome] = conversationHistory;
+			        conversas[conversa_nome] = historico;
 			        localStorage.setItem('conversas', JSON.stringify(conversas));
 			        carregarConversasSelect()
-			        // Limpa o campo prompt
-			        //             document.getElementById('prompt').value = '';
-			        // Atualiza a lista de conversas
-			        //             carregarEspecialistasNoSelect(); 
-			        //             edit_especialista=false;
 			    }
 			}
 			
 			function abrirConversas (){
-			
 			    const botao = event.currentTarget;
 			    const divEspecial = botao.closest('.especial');
 			    divEspecial.style.outline = '1px solid';
@@ -897,7 +738,6 @@
 			    optionSelecao.value = 'Selecione'; // Deixe vazio para que ela possa ser selecionada
 			    optionSelecao.textContent = 'Selecione';
 			    selectConversas.appendChild(optionSelecao);
-			
 			
 			    const conversas = JSON.parse(localStorage.getItem('conversas') || '{}');
 			    for (const [nome, texto] of Object.entries(conversas)) {
@@ -916,7 +756,7 @@
 			}
 			function novaConversa(){
 			    responseDiv.innerHTML="";
-			    conversationHistory = [];
+			    historico = [];
 			}
 			function carregarConversas (){
 			    responseDiv.innerHTML="";
@@ -924,65 +764,93 @@
 			    nomeConversas = selectConversas.value;
 			    if (nomeConversas == "Selecione") return;
 			    const conversas = JSON.parse(localStorage.getItem('conversas') || '{}');
-			    conversationHistory =conversas[nomeConversas];
-			    conversationHistory.forEach((mensagem) => {
-			        const tag = document.createElement(mensagem.role === 'user' ? 'eu' : 'ia');
+			    historico = conversas[nomeConversas];
+			    historico.forEach((mensagem) => {
+			        
+			       
+			        const balao = document.createElement('balao');
+			    responseDiv.appendChild(balao);
+			    const tag = document.createElement(mensagem.role === 'user' ? 'eu' : 'ia');
+			    
+			        
+			        
+			        
+			        
+			 
 			        tag.textContent = mensagem.content;
-			        responseDiv.appendChild(tag);
+			        balao.innerHTML += '<br>';
+			//         responseDiv.appendChild(tag);
+			        balao.appendChild(tag);
+			        
 			    });
 			    render_code3();
 			}
 			
-			// console.clear();
-			let tem_Code = false;
-			let fullText ="";let codigo = '';
-			function estilizar2 (text) {
-			    if (!text) return '';
 			
 			
-			    fullText += text; // Aqui você pode receber o texto fragmentado e juntar
-			    if (!fullText.includes("\n")) return '';    
-			    if (tem_Code) {
-			        codigo += fullText; // Continuar acumulando o código
-			        if (fullText.includes('```')) {
-			            tem_Code = false; // Código terminou
-			            fullText="";  
+			// Função principal ajustada
+			async function render_code3() {
+			    const iaTags = document.querySelectorAll('ia');
 			
-			            return '#fim#\n';
-			            //                     return '<pre><code>' + codigo + '</code></pre>';
+			    for (const iaTag of iaTags) { // Usamos um loop 'for' para aguardar as promises
+			        const content = iaTag.textContent;
+			        const codeBlocks = content.match(/```(\w*)\n([\s\S]*?)```/g);
+			
+			        if (codeBlocks) {
+			            const fragment = document.createDocumentFragment();
+			            let remainingContent = content;
+			
+			            for (const block of codeBlocks) {
+			                const match = block.match(/```(\w*)\n([\s\S]*?)```/);
+			                if (!match) continue; // Pula se não houver correspondência
+			
+			                let language = match[1].toLowerCase(); // Linguagem em minúsculas
+			                const codeContent = match[2].trim(); // Conteúdo do bloco
+			
+			                // Carrega o modo dinamicamente e aguarda
+			                await loadModeScript(language);
+			
+			                const textBefore = remainingContent.split(block)[0];
+			                if (textBefore) {
+			                    const textNode = document.createTextNode(textBefore);
+			                    fragment.appendChild(textNode);
+			                }
+			
+			                const codeContainer = document.createElement('div');
+			                codeContainer.classList.add('code-container');
+			                fragment.appendChild(codeContainer);
+			                carrega_tema();
+			                const codeMirrorInstance = CodeMirror(codeContainer, {
+			                    value: codeContent || '',
+			                    mode: language_list[language],
+			                    //                     lineNumbers: true,
+			                    theme: themes[currentThemeIndex],
+			                    viewportMargin: Infinity,
+			                    lineWrapping: true,
+			                    readOnly: false
+			                });
+			
+			                setTimeout(() => codeMirrorInstance.refresh(), 0);
+			                remainingContent = remainingContent.split(block)[1] || '';
+			            }
+			
+			            if (remainingContent) {
+			                const textNode = document.createTextNode(remainingContent);
+			                fragment.appendChild(textNode);
+			            }
+			
+			            iaTag.innerHTML = '';
+			            iaTag.appendChild(fragment);
 			        }
-			
-			        fullText="";  
-			        return "-"
-			    } 
-			    if (fullText.includes('```')){
-			        tem_Code = true; // Início de bloco de código
-			        codigo = fullText; // Começa a acumular código
-			        fullText="";        
-			        return '#ini#'; // Não processa nada até terminar o código
-			
 			    }
-			
-			    let textoFormatado = fullText.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
-			    .replace(/__(.+?)__/g, '<strong>$1</strong>')
-			    .replace(/\*(.+?)\*/g, '<em>$1</em>')
-			    .replace(/_(.+?)_/g, '<em>$1</em>')
-			    .replace(/# (.+)/g, '<h1>$1</h1>')
-			    .replace(/## (.+)/g, '<h2>$1</h2>')
-			    .replace(/### (.+)/g, '<h3>$1</h3>')
-			    .replace(/^\- (.+)$/gm, ' - $1')
-			    .replace(/^\* (.+)$/gm, ' * $1')
-			    //     .replace(/`([^`]+)`/g, '<code>$1</code>')
-			    .replace(/!\[([^\]]+)\]\(([^)]+)\)/g, '<img src="$2" alt="$1">')
-			    .replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2">$1</a>')
-			    .replace(/^\> (.+)$/gm, '<blockquote>$1</blockquote>')
-			    .replace(/\n---\n/g, '<hr>');
-			
-			    fullText="";
-			    return textoFormatado;
 			}
 			
 			
+			
+			
+			// console.clear();
+			let tem_Code = false;
+			let fullText ="";let codigo = '';
 			let accumulatedMarkdown = ""; 
 			let currentDiv = null; 
 			let divCode = null;
@@ -1022,7 +890,6 @@
 			    }, 500);
 			}
 			
-			
 			function createCodeMirrorInstance() {
 			    const textarea = document.createElement('textarea');
 			    divCode.appendChild(textarea);
@@ -1033,12 +900,6 @@
 			        lineWrapping: true,
 			    });
 			    return cm;
-			}
-			function createNewFragmentDiv2(tempResponse) {
-			    const div = document.createElement('div');
-			    div.className = 'ff';
-			    tempResponse.appendChild(div);
-			    return div;
 			}
 			
 			function createNewFragmentDiv(tempResponse) {
@@ -1053,7 +914,8 @@
 			    if (!fragment) return '';
 			
 			    if (tem_Code) {
-			        codigo += fragment; // Continuar acumulando o código
+			        codigo += fragment; 
+			        
 			        if (!language){
 			            const match = codigo.match(/```(\w+)/);
 			            codigo = ""; 
@@ -1063,10 +925,12 @@
 			            return;
 			        }
 			        if (fragment.includes('`\n')) {
+			            
 			            tem_Code = false; 
 			            fragment=""; 
 			            language="";
 			            codigo="";
+			            currentDiv = createNewFragmentDiv(tempResponse);
 			            return;
 			        }   
 			
@@ -1080,11 +944,12 @@
 			        tem_Code = true; 
 			        divCode = createNewFragmentDiv(tempResponse); 
 			        cm = createCodeMirrorInstance(); 
-			        return
+			        return 
 			    }
 			
 			    if (!tem_Code) 
 			        currentDiv.appendChild(document.createTextNode(fragment));
+			    
 			    accumulatedMarkdown += fragment;
 			
 			    if (fragment.includes('\n')) renderiza = true
@@ -1103,7 +968,24 @@
 			        currentDiv = createNewFragmentDiv(tempResponse);
 			        renderiza=false;
 			    }
+			} 
+			
+			window.onload = function() { 
+			    carregarModelosOllama();
+			    //select_especialista();
+			//     document.getElementById("prompt").focus();
+			    
 			}
+			
+			function escapeHtml(unsafe) {
+			        return unsafe
+			            .replace(/&/g, "&amp;")
+			            .replace(/</g, "&lt;")
+			            .replace(/>/g, "&gt;")
+			            .replace(/"/g, "&quot;")
+			            .replace(/'/g, "&#039;");
+			    }
+			
 			
 		</script>
 	</body>
