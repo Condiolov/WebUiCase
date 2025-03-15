@@ -96,6 +96,7 @@
 			    border-radius: 20px;
 			    padding: 13px;
 			    margin-bottom:2vh;
+			    max-height: 80vh;
 			}
 			.fixo {
 			    width: 100%;
@@ -131,9 +132,8 @@
 			}
 			
 			eu{
-			        float: right;
+			    float: right;
 			    text-align: right;
-			/*     margin: 10px; */
 			    justify-self: anchor-center;
 			    background: #36383acc;
 			    box-sizing: border-box;
@@ -142,26 +142,21 @@
 			}
 			
 			ia {
-			   float: left;
-			/*     margin: 10px; */
+			    float: left;
 			    justify-self: anchor-center;
 			    background: #36383acc;
 			    box-sizing: border-box;
 			    border-radius: 20px 20px 20px 0px;
 			    padding: 13px;
 			}
-			.code-container {
-			    width: 100%; 
-			    max-width: 100%; 
-			    overflow: auto; 
-			    border: 1px solid #ddd;
-			    margin: 10px 0; 
-			}
 			
 			.CodeMirror {
 			    height: auto !important;
 			    border-radius: 10px;
 			    font-family: monospace; 
+			}
+			.CodeMirror-linenumbers, .CodeMirror-gutter-elt{
+			    user-select: none;
 			}
 			.legenda{
 			    font-size:10px;
@@ -373,6 +368,7 @@
 			
 			    historico.push({ role: "assistant", content: aiResponse });
 			    responseDiv.innerHTML += '<br>'; 
+			    document.getElementById("prompt").focus();
 			}
 			
 			
@@ -488,10 +484,9 @@
 			        });
 			        button.textContent = '🔍'; // Emoji de lupa no botão
 			    }
-			
 			}
 			
-			let currentHighlightIndex = -1; // Declarado fora da função para persistir entre chamadas
+			let currentHighlightIndex = -1; 
 			
 			function findNext() {
 			    const findInput = document.getElementById('find');
@@ -543,9 +538,9 @@
 			        if (currentHighlightIndex ===
 			
 			            -1 || highlights.length <= currentHighlightIndex) {
-			            currentHighlightIndex = 0; // Reseta se não houver destaque ou índice inválido
+			            currentHighlightIndex = 0; 
 			        } else {
-			            currentHighlightIndex = (currentHighlightIndex + 1) % highlights.length; // Cicla
+			            currentHighlightIndex = (currentHighlightIndex + 1) % highlights.length; 
 			        }
 			        const nextHighlight = highlights[currentHighlightIndex];
 			        if (nextHighlight) {
@@ -567,8 +562,8 @@
 			
 			window.addEventListener('wheel', (event) => {
 			    const toggleButton = document.getElementById('toggle-scroll');  
-			    if (event.deltaY < 0) { // Rolagem para cima (deltaY negativo)
-			        if (isAutoScrollEnabled) { // Só atualiza se estava desativado
+			    if (event.deltaY < 0) { 
+			        if (isAutoScrollEnabled) { 
 			            isAutoScrollEnabled = false;
 			            toggleButton.textContent = '🔻';
 			            toggleButton.style.display = 'block';
@@ -650,33 +645,23 @@
 			        const especialistas = JSON.parse(localStorage.getItem('especialistas') || '{}');
 			        if (edit_especialista)
 			            document.getElementById('prompt').value = especialistas[nomeEspecialista] || '';
-			        //         nome_especialista=
 			        else
 			            sytemPrompt= especialistas[nomeEspecialista];
 			    }
 			}
 			
 			
-			// Função para criar e exibir a legenda
 			document.addEventListener('mouseover', function(event) {
 			    if (event.target.hasAttribute('legenda')) {
 			        const toolTip = event.target.getAttribute('legenda');
-			
-			        // Cria o elemento da legenda
 			        const legenda = document.createElement('span');
 			        legenda.className = 'legenda';
 			        legenda.textContent = toolTip;
-			
-			        // Posiciona a legenda
 			        legenda.style.position = 'absolute';
 			        legenda.style.top = `${event.pageY - 10}px`;
 			        legenda.style.left = `${event.pageX + 20}px`;
-			        legenda.style.display = 'none'; // Inicialmente oculta
-			
-			        // Adiciona a legenda ao body
+			        legenda.style.display = 'none';
 			        document.body.appendChild(legenda);
-			
-			        // Exibe a legenda com efeito de fadeIn
 			        setTimeout(() => {
 			            legenda.style.display = 'block';
 			            legenda.style.opacity = '1';
@@ -685,7 +670,6 @@
 			    }
 			});
 			
-			// Função para remover a legenda ao sair do elemento
 			document.addEventListener('mouseout', function(event) {
 			    if (event.target.hasAttribute('legenda')) {
 			        const legenda = document.querySelector('.legenda');
@@ -693,7 +677,6 @@
 			    }
 			});
 			
-			// Função para mover a legenda com o mouse
 			document.addEventListener('mousemove', function(event) {
 			    const legenda = document.querySelector('.legenda');
 			    if (legenda) {
@@ -706,12 +689,9 @@
 			function salvar_conversa(){
 			    const iaElement = document.querySelector('ia');
 			    const texto = iaElement.textContent;
-			
-			    // Extrair o texto entre os primeiros **
 			    const regex = /\*\*(.*?)\*\*/;
 			    const match = texto.match(regex);
 			    const resultado = match ? match[1] : '';
-			
 			    conversa_nome = window.prompt('Nome para conversa:', resultado);
 			    if (conversa_nome) { 
 			        const conversas = JSON.parse(localStorage.getItem('conversas') || '{}');
@@ -728,14 +708,13 @@
 			    const selectConversas = document.querySelector('.conversas');
 			    selectConversas.classList.remove('hidden');
 			    carregarConversasSelect()
-			
 			}
 			
 			function carregarConversasSelect() {
 			    const selectConversas = document.getElementById('conversas');
 			    selectConversas.innerHTML = '';
 			    const optionSelecao = document.createElement('option');
-			    optionSelecao.value = 'Selecione'; // Deixe vazio para que ela possa ser selecionada
+			    optionSelecao.value = 'Selecione'; 
 			    optionSelecao.textContent = 'Selecione';
 			    selectConversas.appendChild(optionSelecao);
 			
@@ -766,33 +745,20 @@
 			    const conversas = JSON.parse(localStorage.getItem('conversas') || '{}');
 			    historico = conversas[nomeConversas];
 			    historico.forEach((mensagem) => {
-			        
-			       
 			        const balao = document.createElement('balao');
-			    responseDiv.appendChild(balao);
-			    const tag = document.createElement(mensagem.role === 'user' ? 'eu' : 'ia');
-			    
-			        
-			        
-			        
-			        
-			 
+			        responseDiv.appendChild(balao);
+			        const tag = document.createElement(mensagem.role === 'user' ? 'eu' : 'ia');
 			        tag.textContent = mensagem.content;
 			        balao.innerHTML += '<br>';
-			//         responseDiv.appendChild(tag);
-			        balao.appendChild(tag);
-			        
+			        balao.appendChild(tag)
 			    });
-			    render_code3();
+			
+			    render_codemirror();
 			}
 			
-			
-			
-			// Função principal ajustada
-			async function render_code3() {
+			async function render_codemirror() {
 			    const iaTags = document.querySelectorAll('ia');
-			
-			    for (const iaTag of iaTags) { // Usamos um loop 'for' para aguardar as promises
+			    for (const iaTag of iaTags) { 
 			        const content = iaTag.textContent;
 			        const codeBlocks = content.match(/```(\w*)\n([\s\S]*?)```/g);
 			
@@ -802,53 +768,44 @@
 			
 			            for (const block of codeBlocks) {
 			                const match = block.match(/```(\w*)\n([\s\S]*?)```/);
-			                if (!match) continue; // Pula se não houver correspondência
-			
-			                let language = match[1].toLowerCase(); // Linguagem em minúsculas
-			                const codeContent = match[2].trim(); // Conteúdo do bloco
-			
-			                // Carrega o modo dinamicamente e aguarda
+			                if (!match) continue; 
+			                let language = match[1].toLowerCase(); 
+			                const codeContent = match[2].trim();         
 			                await loadModeScript(language);
-			
 			                const textBefore = remainingContent.split(block)[0];
 			                if (textBefore) {
 			                    const textNode = document.createTextNode(textBefore);
 			                    fragment.appendChild(textNode);
 			                }
 			
-			                const codeContainer = document.createElement('div');
-			                codeContainer.classList.add('code-container');
-			                fragment.appendChild(codeContainer);
+			                const textarea = document.createElement('div');
+			                fragment.appendChild(textarea);
 			                carrega_tema();
-			                const codeMirrorInstance = CodeMirror(codeContainer, {
+			                const cm = CodeMirror(textarea, {
 			                    value: codeContent || '',
 			                    mode: language_list[language],
-			                    //                     lineNumbers: true,
+			                    lineNumbers: true,
 			                    theme: themes[currentThemeIndex],
 			                    viewportMargin: Infinity,
 			                    lineWrapping: true,
-			                    readOnly: false
+			                    readOnly: false,
+			                    indentUnit: 4,
+			                    inputStyle: 'contenteditable'
 			                });
-			
-			                setTimeout(() => codeMirrorInstance.refresh(), 0);
+			                cm.setSelection({ line: 0, ch: 0 }, { line: cm.lastLine(), ch: 0 });             cm.execCommand("indentAuto"); 
+			                setTimeout(() => cm.refresh(), 0);
 			                remainingContent = remainingContent.split(block)[1] || '';
 			            }
-			
 			            if (remainingContent) {
 			                const textNode = document.createTextNode(remainingContent);
 			                fragment.appendChild(textNode);
 			            }
-			
 			            iaTag.innerHTML = '';
 			            iaTag.appendChild(fragment);
 			        }
 			    }
 			}
 			
-			
-			
-			
-			// console.clear();
 			let tem_Code = false;
 			let fullText ="";let codigo = '';
 			let accumulatedMarkdown = ""; 
@@ -891,13 +848,16 @@
 			}
 			
 			function createCodeMirrorInstance() {
-			    const textarea = document.createElement('textarea');
+			    const textarea = document.createElement('textarea'); 
 			    divCode.appendChild(textarea);
 			    cm = CodeMirror.fromTextArea(textarea, {
 			        lineNumbers: true,
 			        theme: themes[currentThemeIndex],
 			        viewportMargin: Infinity,
 			        lineWrapping: true,
+			        readOnly: false,
+			        indentUnit: 4,
+			        inputStyle: 'contenteditable'
 			    });
 			    return cm;
 			}
@@ -905,7 +865,6 @@
 			function createNewFragmentDiv(tempResponse) {
 			    const div = document.createElement('div');
 			    div.className = 'ff';
-			    // console.log(tempResponse);
 			    tempResponse.appendChild(div);
 			    return div;
 			}
@@ -915,7 +874,7 @@
 			
 			    if (tem_Code) {
 			        codigo += fragment; 
-			        
+			
 			        if (!language){
 			            const match = codigo.match(/```(\w+)/);
 			            codigo = ""; 
@@ -925,7 +884,6 @@
 			            return;
 			        }
 			        if (fragment.includes('`\n')) {
-			            
 			            tem_Code = false; 
 			            fragment=""; 
 			            language="";
@@ -949,7 +907,7 @@
 			
 			    if (!tem_Code) 
 			        currentDiv.appendChild(document.createTextNode(fragment));
-			    
+			
 			    accumulatedMarkdown += fragment;
 			
 			    if (fragment.includes('\n')) renderiza = true
@@ -972,19 +930,18 @@
 			
 			window.onload = function() { 
 			    carregarModelosOllama();
-			    //select_especialista();
-			//     document.getElementById("prompt").focus();
-			    
+			    document.getElementById("prompt").focus();
+			
 			}
 			
 			function escapeHtml(unsafe) {
-			        return unsafe
-			            .replace(/&/g, "&amp;")
-			            .replace(/</g, "&lt;")
-			            .replace(/>/g, "&gt;")
-			            .replace(/"/g, "&quot;")
-			            .replace(/'/g, "&#039;");
-			    }
+			    return unsafe
+			        .replace(/&/g, "&amp;")
+			        .replace(/</g, "&lt;")
+			        .replace(/>/g, "&gt;")
+			        .replace(/"/g, "&quot;")
+			        .replace(/'/g, "&#039;");
+			}
 			
 			
 		</script>
