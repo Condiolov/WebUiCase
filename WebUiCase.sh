@@ -28,6 +28,7 @@ WebUiCase() {
 
     #     echo -e "HTTP/1.1 200 OK\r\nContent-Type: text/html\r\n\r\n"
     [[ "$REQUISICAO" == '/' ]] && REQUISICAO='/WebUiCase.html'
+    [[ "$REQUISICAO" == '/sair' ]] && pkill -f "WebUiCase"
 
     #     echo $REQUISICAO
 
@@ -40,9 +41,9 @@ WebUiCase() {
 }
 
 [[ -n "$1" ]] && $1 && exit
-
-pgrep -f "ncat -l -p $PORT" >/dev/null 2>&1 && exit
 brave-browser --profile-directory=Default --app-id=hbblfifohofgngfbjbiimbbcimepbdcb
+pgrep -f "ncat -l -p $PORT" >/dev/null 2>&1 && exit
+
 while true; do
     ncat -l -p $PORT -e "$0 WebUiCase"
 done
