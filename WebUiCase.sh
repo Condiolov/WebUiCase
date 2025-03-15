@@ -41,7 +41,8 @@ WebUiCase() {
 }
 
 [[ -n "$1" ]] && $1 && exit
-brave-browser --profile-directory=Default --app-id=hbblfifohofgngfbjbiimbbcimepbdcb
+#brave-browser --profile-directory=Default --app-id=hbblfifohofgngfbjbiimbbcimepbdcb #[ id gerado pelo navegador do web app]
+brave-browser "http://localhost:$PORT/WebUiCase.html"
 pgrep -f "ncat -l -p $PORT" >/dev/null 2>&1 && exit
 
 while true; do
