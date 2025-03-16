@@ -744,9 +744,7 @@
 			    nomeConversas = selectConversas.value;
 			    if (nomeConversas == "Selecione") return;
 			    const conversas = JSON.parse(localStorage.getItem('conversas') || '{}');
-			    console.clear();
 			    historico = conversas[nomeConversas];
-			    console.log(historico)
 			    historico.forEach((mensagem) => {
 			        const tag = document.createElement(mensagem.role === 'user' ? 'eu' : 'ia'); const balao = document.createElement('balao');
 			        responseDiv.appendChild(balao);
