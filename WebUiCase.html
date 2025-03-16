@@ -737,14 +737,7 @@
 			    responseDiv.innerHTML="";
 			    historico = [];
 			}
-			function createCodeMirrorInstanceAsync() {
-			    return new Promise((resolve) => {
-			        const cm = createCodeMirrorInstance();
-			        cm.on("change", () => {
-			            resolve(cm);
-			        });
-			    });
-			}
+			
 			function carregarConversas (){
 			    responseDiv.innerHTML="";
 			    const selectConversas = document.getElementById('conversas');
