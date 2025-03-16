@@ -255,7 +255,7 @@
 			
 			        <div class="fixo"> 
 			            <button id="toggle-scroll" onclick="toggleAutoScroll()" style="display:none"></button>
-			            <textarea id="prompt" autofocus placeholder="Digite sua mensagem aqui..."  oninput="this.style.height = ''; this.style.height = this.scrollHeight +'px'">simule o efeito maquina de escrever com js</textarea> 
+			            <textarea id="prompt" autofocus placeholder="Digite sua mensagem aqui..."  oninput="this.style.height = ''; this.style.height = this.scrollHeight +'px'"></textarea> 
 			        </div>
 			
 			        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/6.65.7/codemirror.min.css">
@@ -844,7 +844,6 @@
 			    tempResponse.appendChild(div);
 			    return div;
 			}
-			let fim_codigo=""; 
 			
 			function estilizar (fragment,tempResponse){
 			    if (!fragment) return '';
