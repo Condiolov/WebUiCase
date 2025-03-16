@@ -120,7 +120,7 @@
 			    width: 100%;
 			    justify-self: anchor-center;
 			    white-space: pre-wrap;
-			    margin-bottom: 110px;
+			    margin-bottom: 150px;
 			    margin-top: 50px;
 			    display: flex        ;
 			    flex-direction: column;
@@ -133,7 +133,7 @@
 			
 			eu{
 			    float: right;
-			    text-align: right;
+			    /*     text-align: right; */
 			    justify-self: anchor-center;
 			    background: #36383acc;
 			    box-sizing: border-box;
@@ -193,10 +193,6 @@
 			.ff {
 			    margin: 0;
 			    padding: 0; 
-			}
-			
-			.ff {
-			    margin-bottom: 0; 
 			    white-space: normal;
 			}
 			
@@ -244,11 +240,11 @@
 			                        </select>            <button class="bttn" onclick="excluirConversas()" legenda="Excluir Conversas">🗑️</button>
 			                        <button class="bttn" onclick="sairEspecialista('conversas')" legenda="Fechar Especialista">❌</button>
 			                    </div>
-			                </div>
+			                </div> 
 			                <div class="inline busca hidden">
 			                    <input class="bttn" type="text" oninput="findNext()" id="find"/><button class="bttn" onclick="findNext()">🔍<span id="count-display" class="count-display"></span></button>
 			
-			                </div>
+			                </div>      
 			
 			                <button class="bttn" id="toggle-search" onclick="busca_palavra(this)">🔍</button>
 			                <button class="bttn" legenda="Fecha o WebUiCase" onclick="window.location.href='/sair'; setTimeout(window.close, 10);" style="margin-left: 7vw;">💀</button>
@@ -259,7 +255,7 @@
 			
 			        <div class="fixo"> 
 			            <button id="toggle-scroll" onclick="toggleAutoScroll()" style="display:none"></button>
-			            <textarea id="prompt" autofocus placeholder="Digite sua mensagem aqui..."  oninput="this.style.height = ''; this.style.height = this.scrollHeight +'px'"></textarea> 
+			            <textarea id="prompt" autofocus placeholder="Digite sua mensagem aqui..."  oninput="this.style.height = ''; this.style.height = this.scrollHeight +'px'">simule o efeito maquina de escrever com js</textarea> 
 			        </div>
 			
 			        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/6.65.7/codemirror.min.css">
@@ -745,7 +741,7 @@
 			    if (nomeConversas == "Selecione") return;
 			    const conversas = JSON.parse(localStorage.getItem('conversas') || '{}');
 			    historico = conversas[nomeConversas];
-			    historico.forEach((mensagem) => {
+			    historico.forEach((mensagem) => { 
 			        const tag = document.createElement(mensagem.role === 'user' ? 'eu' : 'ia'); const balao = document.createElement('balao');
 			        responseDiv.appendChild(balao);
 			        if (mensagem.role === 'user'){
@@ -848,12 +844,13 @@
 			    tempResponse.appendChild(div);
 			    return div;
 			}
+			let fim_codigo=""; 
 			
 			function estilizar (fragment,tempResponse){
 			    if (!fragment) return '';
-			
+			    codigo += fragment; 
 			    if (tem_Code) {
-			        codigo += fragment; 
+			
 			
 			        if (!language){
 			            const match = codigo.match(/```(\w+)/);
@@ -863,19 +860,21 @@
 			            carrega_tema();
 			            return;
 			        }
-			        if (fragment.includes('`\n')) {
+			        //         if (fragment.includes('`\n')) {  
+			        if (codigo.includes('`\n')) {
 			            tem_Code = false; 
 			            fragment=""; 
 			            language="";
-			            codigo="";
+			            codigo=""; 
 			            currentDiv = createNewFragmentDiv(tempResponse);
 			            return;
-			        }   
+			        }    
 			
-			        cm.replaceRange(fragment.replace(/`+/g, ''), { 
+			        cm.replaceRange(fragment.replace(/```|``/g, ''), { 
 			            line: cm.lastLine(),
 			            ch: cm.getLine(cm.lastLine()).length });
-			        return;
+			
+			        return; 
 			    } 
 			    if (fragment.includes('```')){
 			        codigo += fragment; 
