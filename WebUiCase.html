@@ -737,73 +737,62 @@
 			    responseDiv.innerHTML="";
 			    historico = [];
 			}
+			function createCodeMirrorInstanceAsync() {
+			    return new Promise((resolve) => {
+			        const cm = createCodeMirrorInstance();
+			        cm.on("change", () => {
+			            resolve(cm);
+			        });
+			    });
+			}
 			function carregarConversas (){
 			    responseDiv.innerHTML="";
 			    const selectConversas = document.getElementById('conversas');
 			    nomeConversas = selectConversas.value;
 			    if (nomeConversas == "Selecione") return;
 			    const conversas = JSON.parse(localStorage.getItem('conversas') || '{}');
+			    console.clear();
 			    historico = conversas[nomeConversas];
+			    console.log(historico)
 			    historico.forEach((mensagem) => {
-			        const balao = document.createElement('balao');
+			        const tag = document.createElement(mensagem.role === 'user' ? 'eu' : 'ia'); const balao = document.createElement('balao');
 			        responseDiv.appendChild(balao);
-			        const tag = document.createElement(mensagem.role === 'user' ? 'eu' : 'ia');
-			        tag.textContent = mensagem.content;
+			        if (mensagem.role === 'user'){
+			            tag.textContent = mensagem.content;
+			        }else{
+			            if (mensagem.content.includes('```')) {
+			                const parts = mensagem.content.split('```');
+			                let htmlContent = '';
+			                let inCodeBlock = false;
+			
+			                parts.forEach((part, index) => {
+			                    setTimeout(() => {
+			                        if (inCodeBlock) {
+			                            inCodeBlock = false;
+			                            const linhas = part.split('\n');
+			                            language = linhas[0].trim();
+			                            const removePrimeiraLinha = linhas.slice(1);
+			                            part = removePrimeiraLinha.join('\n');
+			                            divCode = tag; 
+			                            cm = createCodeMirrorInstance();
+			                            cm.setValue(part);
+			                            cm.setSelection({ line: 0, ch: 0 }, { line: cm.lastLine(), ch: 300 });
+			                            cm.execCommand('indentAuto');
+			                        } else {
+			                            tag.innerHTML += marked.parse(part);
+			                            balao.appendChild(tag)
+			                            inCodeBlock = true;
+			                        } 
+			                    }, 100); 
+			                });
+			                tag.innerHTML = htmlContent;
+			            } else {
+			                tag.innerHTML += marked.parse(mensagem.content);
+			            }
+			        }
 			        balao.innerHTML += '<br>';
 			        balao.appendChild(tag)
 			    });
-			
-			    render_codemirror();
-			}
-			
-			async function render_codemirror() {
-			    const iaTags = document.querySelectorAll('ia');
-			    for (const iaTag of iaTags) { 
-			        const content = iaTag.textContent;
-			        const codeBlocks = content.match(/```(\w*)\n([\s\S]*?)```/g);
-			
-			        if (codeBlocks) {
-			            const fragment = document.createDocumentFragment();
-			            let remainingContent = content;
-			
-			            for (const block of codeBlocks) {
-			                const match = block.match(/```(\w*)\n([\s\S]*?)```/);
-			                if (!match) continue; 
-			                let language = match[1].toLowerCase(); 
-			                const codeContent = match[2].trim();         
-			                await loadModeScript(language);
-			                const textBefore = remainingContent.split(block)[0];
-			                if (textBefore) {
-			                    const textNode = document.createTextNode(textBefore);
-			                    fragment.appendChild(textNode);
-			                }
-			
-			                const textarea = document.createElement('div');
-			                fragment.appendChild(textarea);
-			                carrega_tema();
-			                const cm = CodeMirror(textarea, {
-			                    value: codeContent || '',
-			                    mode: language_list[language],
-			                    lineNumbers: true,
-			                    theme: themes[currentThemeIndex],
-			                    viewportMargin: Infinity,
-			                    lineWrapping: true,
-			                    readOnly: false,
-			                    indentUnit: 4,
-			                    inputStyle: 'contenteditable'
-			                });
-			                cm.setSelection({ line: 0, ch: 0 }, { line: cm.lastLine(), ch: 0 });             cm.execCommand("indentAuto"); 
-			                setTimeout(() => cm.refresh(), 0);
-			                remainingContent = remainingContent.split(block)[1] || '';
-			            }
-			            if (remainingContent) {
-			                const textNode = document.createTextNode(remainingContent);
-			                fragment.appendChild(textNode);
-			            }
-			            iaTag.innerHTML = '';
-			            iaTag.appendChild(fragment);
-			        }
-			    }
 			}
 			
 			let tem_Code = false;
